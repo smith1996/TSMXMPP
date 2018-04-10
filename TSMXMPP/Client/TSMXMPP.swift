@@ -10,6 +10,7 @@ import Foundation
 import XMPPFramework
 
 protocol TSMXMPPIncomingMessageDelegate {
+    
     func receivedMessage(message: Message)
 }
 

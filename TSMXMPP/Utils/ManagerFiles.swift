@@ -7,3 +7,20 @@
 //
 
 import Foundation
+import AWSS3
+
+struct ManagerFiles {
+    
+    func uploadingFiles(arrayData: [FileManager]) {
+        
+        ManagerAWSS3.sharedInstance.initCognitoIdentifier()
+        
+        let S3Client = AWSS3.default()
+        let putObjectRequest = AWSS3PutObjectRequest()
+        putObjectRequest?.bucket = ""
+        putObjectRequest?.key = ""
+        putObjectRequest?.body = ""
+        
+    }
+    
+}

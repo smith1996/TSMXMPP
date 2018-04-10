@@ -14,5 +14,5 @@ internal struct TSMFile: Codable {
     let nameFile: String
     let mimeType: String
     let url: String
-    
+
 }
