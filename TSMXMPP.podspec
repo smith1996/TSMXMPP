@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.description  = "This is some super TismartXMPP that was made by a crazy guy may may."
   s.homepage     = "https://github.com/smith1996/TSMXMPP"
 
-  s.license      = 'MIT'
+  s.license      = { :type => 'MIT', :file => "LICENSE" }
   s.author       = { "Smith Huamani" => "smithhh1996@gmail.com" }
   s.source       = { :git => "https://github.com/smith1996/TSMXMPP.git"}
 
@@ -17,8 +17,6 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '10.0'
   s.requires_arc = true
 
-  s.dependency 'XMPPFramework'
-  s.ios.frameworks = 'XMPPFramework'
-  s.source_files  = "TSMXMPP/**/*.{h,m}"
+  s.source_files  = "TSMXMPP", "TSMXMPP/**/*.{h,m}"
 
 end

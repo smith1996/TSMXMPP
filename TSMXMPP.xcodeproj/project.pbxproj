@@ -23,6 +23,13 @@
 /* Begin PBXBuildFile section */
 		7D0994EA207BC2640023E11E /* TSMXMPP.h in Headers */ = {isa = PBXBuildFile; fileRef = 7D0994E8207BC2640023E11E /* TSMXMPP.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7D0994F1207BC28D0023E11E /* TSMXMPP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D0994F0207BC28D0023E11E /* TSMXMPP.swift */; };
+		7D51FA9F207CFE24005543CD /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D51FA9E207CFE24005543CD /* Message.swift */; };
+		7D51FAA1207CFE2F005543CD /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D51FAA0207CFE2F005543CD /* File.swift */; };
+		7D51FAA3207CFE7C005543CD /* TSMXMPPClientDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D51FAA2207CFE7C005543CD /* TSMXMPPClientDelegate.swift */; };
+		7D51FAA5207CFEEC005543CD /* TSMMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D51FAA4207CFEEC005543CD /* TSMMessage.swift */; };
+		7D51FAA7207CFF22005543CD /* TSMFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D51FAA6207CFF22005543CD /* TSMFile.swift */; };
+		7D51FAA9207CFF47005543CD /* TSMMessageMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D51FAA8207CFF47005543CD /* TSMMessageMapper.swift */; };
+		7D51FAAB207D07A2005543CD /* ManagerFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D51FAAA207D07A2005543CD /* ManagerFiles.swift */; };
 		7DDEA74C207BFE6900C3F3B2 /* XMPPFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DDEA74B207BFE6900C3F3B2 /* XMPPFramework.framework */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +38,13 @@
 		7D0994E8207BC2640023E11E /* TSMXMPP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSMXMPP.h; sourceTree = "<group>"; };
 		7D0994E9207BC2640023E11E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7D0994F0207BC28D0023E11E /* TSMXMPP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSMXMPP.swift; sourceTree = "<group>"; };
+		7D51FA9E207CFE24005543CD /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		7D51FAA0207CFE2F005543CD /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		7D51FAA2207CFE7C005543CD /* TSMXMPPClientDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSMXMPPClientDelegate.swift; sourceTree = "<group>"; };
+		7D51FAA4207CFEEC005543CD /* TSMMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSMMessage.swift; sourceTree = "<group>"; };
+		7D51FAA6207CFF22005543CD /* TSMFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSMFile.swift; sourceTree = "<group>"; };
+		7D51FAA8207CFF47005543CD /* TSMMessageMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSMMessageMapper.swift; sourceTree = "<group>"; };
+		7D51FAAA207D07A2005543CD /* ManagerFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerFiles.swift; sourceTree = "<group>"; };
 		7DDEA74B207BFE6900C3F3B2 /* XMPPFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XMPPFramework.framework; path = Carthage/Build/iOS/XMPPFramework.framework; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -65,12 +79,75 @@
 		7D0994E7207BC2640023E11E /* TSMXMPP */ = {
 			isa = PBXGroup;
 			children = (
-				7DA3330D207BFB3300D92D4E /* TSMXMPP-framework */,
+				7D51FA97207CFD62005543CD /* Client */,
+				7D51FA99207CFD80005543CD /* Models */,
+				7D51FA98207CFD6E005543CD /* AWSS3 */,
+				7D51FA9A207CFD8C005543CD /* Utils */,
 				7D0994E8207BC2640023E11E /* TSMXMPP.h */,
 				7D0994E9207BC2640023E11E /* Info.plist */,
-				7D0994F0207BC28D0023E11E /* TSMXMPP.swift */,
+				7DA3330D207BFB3300D92D4E /* TSMXMPP-framework */,
 			);
 			path = TSMXMPP;
+			sourceTree = "<group>";
+		};
+		7D51FA97207CFD62005543CD /* Client */ = {
+			isa = PBXGroup;
+			children = (
+				7D51FA9B207CFDE0005543CD /* Exceptions */,
+				7D51FA9C207CFDF2005543CD /* Protocols */,
+				7D51FA9D207CFDFD005543CD /* Model */,
+				7D0994F0207BC28D0023E11E /* TSMXMPP.swift */,
+			);
+			path = Client;
+			sourceTree = "<group>";
+		};
+		7D51FA98207CFD6E005543CD /* AWSS3 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AWSS3;
+			sourceTree = "<group>";
+		};
+		7D51FA99207CFD80005543CD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7D51FAA4207CFEEC005543CD /* TSMMessage.swift */,
+				7D51FAA6207CFF22005543CD /* TSMFile.swift */,
+				7D51FAA8207CFF47005543CD /* TSMMessageMapper.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		7D51FA9A207CFD8C005543CD /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				7D51FAAA207D07A2005543CD /* ManagerFiles.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		7D51FA9B207CFDE0005543CD /* Exceptions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Exceptions;
+			sourceTree = "<group>";
+		};
+		7D51FA9C207CFDF2005543CD /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				7D51FAA2207CFE7C005543CD /* TSMXMPPClientDelegate.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		7D51FA9D207CFDFD005543CD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7D51FA9E207CFE24005543CD /* Message.swift */,
+				7D51FAA0207CFE2F005543CD /* File.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		7DA3330D207BFB3300D92D4E /* TSMXMPP-framework */ = {
@@ -198,7 +275,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D51FAA9207CFF47005543CD /* TSMMessageMapper.swift in Sources */,
+				7D51FAA5207CFEEC005543CD /* TSMMessage.swift in Sources */,
 				7D0994F1207BC28D0023E11E /* TSMXMPP.swift in Sources */,
+				7D51FAAB207D07A2005543CD /* ManagerFiles.swift in Sources */,
+				7D51FAA3207CFE7C005543CD /* TSMXMPPClientDelegate.swift in Sources */,
+				7D51FAA1207CFE2F005543CD /* File.swift in Sources */,
+				7D51FAA7207CFF22005543CD /* TSMFile.swift in Sources */,
+				7D51FA9F207CFE24005543CD /* Message.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
