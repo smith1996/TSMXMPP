@@ -10,41 +10,24 @@ import Foundation
 import AWSCore
 import AWSS3
 
-struct ManagerAWSS3 {
+public struct ManagerAWSS3 {
     
-    static var sharedInstance = ManagerAWSS3()
-
-    var as3TransferManager: AWSS3TransferManager!
-    var as3Bucket: String!
-    var as3BucketRoot: String!
-    var providerIdentityId: String = ""
-    var congnitoReady: Bool = false
+    static var sharedInstances = ManagerAWSS3()
     
-    func initCognitoIdentifier() {
+    private var credentialsProvider: AWSCognitoCredentialsProvider? = nil
+    private var configuration: AWSServiceConfiguration? = nil
+    
+    mutating func serviceConfiguration() -> AWSServiceConfiguration {
         
-        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USWest2, identityPoolId: "")
-        
-        let configuration = AWSServiceConfiguration(region: AWSRegionType.EUWest2, credentialsProvider: credentialsProvider)
-        
-        AWSServiceManager.default().defaultServiceConfiguration = configuration
-        
-        let _ = credentialsProvider.getIdentityId().continueWith { (task: AWSTask) -> Any? in
-            
-            guard task.error != nil else {
-                
-                ManagerAWSS3.sharedInstance.providerIdentityId = task.result! as String
-                ManagerAWSS3.sharedInstance.congnitoReady = true
-                ManagerAWSS3.sharedInstance.as3TransferManager = AWSS3TransferManager.default()
-                ManagerAWSS3.sharedInstance.as3Bucket = ""
-                ManagerAWSS3.sharedInstance.as3BucketRoot = ""
-                return ""
-            }
-            
-            ManagerAWSS3.sharedInstance.initCognitoIdentifier()
-            
-            return task
+        if credentialsProvider == nil {
+            credentialsProvider = AWSCognitoCredentialsProvider(regionType: .USWest2, identityPoolId: Configurations.sharedInstance.identityPoolId)
         }
         
+        if configuration == nil {
+            configuration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialsProvider)
+        }
+        
+        return configuration!
     }
     
 }

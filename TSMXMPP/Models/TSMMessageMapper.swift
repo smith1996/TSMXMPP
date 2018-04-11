@@ -29,17 +29,17 @@ internal struct TSMMessageMapper {
         return arrayFile
     }
     
-//    func transformFilesUser(arrayFiles: [TSMFile]) -> [File] {
-//        var arrayFile = [File]()
-//        if arrayTSMmessage.count != 0 {
-//            for item in arrayFiles {
-//                let file = File(id: item.id, nameFile: item.nameFile, mimeType: item.mimeType, url: item.url)
-//                arrayFile.append(file)
-//            }
-//        }else {
-//            arrayFile = []
-//        }
-//        return arrayFile
-//    }
+    func transformFilesUser(arrayFiles: [URL]) -> [TSMFile] {
+        var arrayFile = [TSMFile]()
+        if arrayFiles.count != 0 {
+            for item in arrayFiles {
+                let file = TSMFile(id: UUID().uuidString, nameFile: item.lastPathComponent, mimeType: item.pathExtension, url: item.absoluteString)
+                arrayFile.append(file)
+            }
+        }else {
+            arrayFile = []
+        }
+        return arrayFile
+    }
     
 }

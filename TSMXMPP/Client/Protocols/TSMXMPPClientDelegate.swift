@@ -43,12 +43,12 @@ protocol TSMXMPPClientDelegate {
      * Esta función espera un message, sendTo, filename y un pathFile de tipo String
      * para el envió de mensaje y archivos cuyo proceso es síncrono.
      **/
-    func sendMessageAndFile(sendTo: String, message: String, filename: String, pathFile: String)
+    func sendMessageAndFile(sendTo: String, message: String, listURL: [URL])
     
     /**
      * Esta función espera un message, sendTo, filename y un pathFile de tipo String,
      * y un callback que implementara dos funciones de success y error. El proceso se
      * hace en un hilo asíncrono.
      **/
-    func sendMessageAndFileAsync(sendTo: String, message: String, filename: String, pathFile: String, completionHandler: TSMXMPPcompletionHandler)
+    func sendMessageAndFileAsync(sendTo: String, message: String, listURL: [URL])
 }

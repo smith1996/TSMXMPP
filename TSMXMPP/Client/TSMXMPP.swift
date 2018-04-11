@@ -10,30 +10,16 @@ import Foundation
 import XMPPFramework
 
 protocol TSMXMPPIncomingMessageDelegate {
-    
     func receivedMessage(message: Message)
 }
 
 protocol TSMXMPPOutgoingMessageDelegate {
     func willSendMessage(message: Message)
     func willReceiveSendMessage(message: Message)
-    func didFailToSendMessage(error: Error)
+    func didFailToSendMessage(error: Error?)
 }
 
-typealias TSMXMPPcompletionHandler = () -> Void
-
 open class TSMXMPP: TSMXMPPClientDelegate {
-    
-//    public init(domain: String) {
-//        stream = XMPPStream()
-//        stream.myJID = XMPPJID(user: "smith", domain: domain, resource: "mobile")
-//    }
-    
-//    open var getFullNameJID: String {
-//        return stream.myJID!.full
-//    }
-    
-//    private var hostName = "192.168.1.238"
 
     private var hostDomain = ""
     private var resource = ""
@@ -47,7 +33,6 @@ open class TSMXMPP: TSMXMPPClientDelegate {
     
     var xmppIncomingMessageDelegate: TSMXMPPIncomingMessageDelegate!
     var xmppOutgoingMessageDelegate: TSMXMPPOutgoingMessageDelegate!
-    
     
     public init(domain: String) {
         
@@ -83,23 +68,13 @@ open class TSMXMPP: TSMXMPPClientDelegate {
     
     public func login(username: String, password: String) {
         
-        guard username != "" else {
-            print("Ingresar las credenciales USERNAME")
-            return
-        }
-        
-        guard password != "" else {
-            print("Ingresar las credenciales PASSWORD")
-            return
-        }
-        
         do {
             if !xmppStream.isConnected {
                 try! xmppStream.connect(withTimeout: XMPPStreamTimeoutNone)
             }
             
             if !xmppStream.isAuthenticated {
-                xmppStream.myJID = XMPPJID(string: username + "@" + hostDomain, resource: resource)
+                xmppStream.myJID = XMPPJID(user: username, domain: hostDomain, resource: resource)
                 passwordJID = password
             }
         } catch let error as NSError {
@@ -110,17 +85,12 @@ open class TSMXMPP: TSMXMPPClientDelegate {
     
     public func login(username: String) {
         
-        guard username != "" else {
-            print("Ingresar las credenciales USERNAME")
-            return
-        }
-        
         do {
             if !xmppStream.isConnected {
                 try! xmppStream.connect(withTimeout: XMPPStreamTimeoutNone)
             }
             if !xmppStream.isAuthenticated {
-                xmppStream.myJID = XMPPJID(string: username + "@" + hostDomain, resource: resource)
+                xmppStream.myJID = XMPPJID(user: username, domain: hostDomain, resource: resource)
                 passwordJID = "12345678"
             }
             
@@ -134,81 +104,49 @@ open class TSMXMPP: TSMXMPPClientDelegate {
     }
     
     public func sendMessage(sendTo: String, message: String) {
+
+        let messageResponse = TSMMessage(id: UUID().uuidString, text: message, time: getDateCurrent(date: Date()), files: [])
+        self.sendToXMPP(sendTo: sendTo, message: messageResponse)
+    }
+    
+    public func sendMessageAndFile(sendTo: String, message: String, listURL: [URL]) {
         
-        guard sendTo != "" else {
-            print("Ingresar el destinatario")
-            return
-        }
-        
-        guard message != "" else {
-            print("Ingresar el mensaje")
-            return
-        }
-        
-        if isAutoReconnecting {
+        DispatchQueue.main.sync {
             
-            let messageResponse = TSMMessage(id: UUID().uuidString, text: message, time: getDateCurrent(date: Date()), files: [])
-            // Parse Object a JSON
-            let encodeData = try? JSONEncoder().encode(messageResponse)
-            //            let jsonObject = try? JSONSerialization.jsonObject(with: encodeData!, options: .allowFragments)
-            //
-            let sendTo = XMPPJID(string: sendTo + "@" + hostDomain)
-            let messageTo = XMPPMessage(type: "chat", to: sendTo)
-            
-            messageTo.addBody(String(data: encodeData!, encoding: .utf8)!)
-            
+            let arrayTransferFiles = ManagerFiles.sharedInstance.uploadingFiles(arrayUrlPath: listURL)
+            let messageResponse = TSMMessage(id: UUID().uuidString, text: message, time: self.getDateCurrent(date: Date()), files: arrayTransferFiles)
+            self.sendToXMPP(sendTo: sendTo, message: messageResponse)
         }
         
     }
     
-    public func sendMessageAndFile(sendTo: String, message: String, filename: String, pathFile: String) {
+    public func sendMessageAndFileAsync(sendTo: String, message: String, listURL: [URL]) {
         
-        guard sendTo != "" else {
-            print("Ingresar el destinatario")
-            return
-        }
-        
-        guard message != "" else {
-            print("Ingresar el mensaje")
-            return
-        }
-        
-        if isAutoReconnecting {
+        DispatchQueue.main.sync {
             
-            let messageResponse = TSMMessage(id: UUID().uuidString, text: message, time: getDateCurrent(date: Date()), files: [])
-            // Parse a JSON
-            let encodeData = try? JSONEncoder().encode(messageResponse)
-            //
-            let sendTo = XMPPJID(string: sendTo + "@" + hostDomain)
-            let messageTo = XMPPMessage(type: "chat", to: sendTo)
-            
-            messageTo.addBody(String(data: encodeData!, encoding: .utf8)!)
+            let arrayTransferFiles = ManagerFiles.sharedInstance.uploadingFiles(arrayUrlPath: listURL)
+            let messageResponse = TSMMessage(id: UUID().uuidString, text: message, time: self.getDateCurrent(date: Date()), files: arrayTransferFiles)
+            self.sendToXMPP(sendTo: sendTo, message: messageResponse)
         }
         
     }
     
-    func sendMessageAndFileAsync(sendTo: String, message: String, filename: String, pathFile: String, completionHandler: TSMXMPPcompletionHandler) {
+    private func sendToXMPP(sendTo: String, message: TSMMessage) {
         
-        guard sendTo != "" else {
-            print("Ingresar el destinatario")
-            return
-        }
+        let sendTo = XMPPJID(user: sendTo, domain: hostDomain, resource: resource)
+        let messageTo = XMPPMessage(type: "chat", to: sendTo)
+        // Parse Object a JSON
+        let encodeData = try? JSONEncoder().encode(message)
         
-        guard message != "" else {
-            print("Ingresar el mensaje")
-            return
-        }
-        
-        if isAutoReconnecting {
-            
-            let messageResponse = TSMMessage(id: UUID().uuidString, text: message, time: getDateCurrent(date: Date()), files: [])
-            // Parse a JSON
-            let encodeData = try? JSONEncoder().encode(messageResponse)
-            //
-            let sendTo = XMPPJID(string: sendTo + "@" + hostDomain)
-            let messageTo = XMPPMessage(type: "chat", to: sendTo)
-            
+        if self.xmppStream.isConnected {
+
             messageTo.addBody(String(data: encodeData!, encoding: .utf8)!)
+        }else {
+            
+            if(isAutoReconnecting) {
+                try! xmppStream.connect(withTimeout: XMPPStreamTimeoutNone)
+                messageTo.addBody(String(data: encodeData!, encoding: .utf8)!)
+            }
         }
         
     }
@@ -250,7 +188,7 @@ extension TSMXMPP: XMPPStreamDelegate {
     
     public func xmppStream(_ sender: XMPPStream, willSend message: XMPPMessage) -> XMPPMessage? {
         
-        print("Will send message 🔜✉️")
+        print("Will send message 👉✉️")
         print(message.to!, message.from!, message.body!)
         
         // Parse JSON to Object
@@ -271,7 +209,6 @@ extension TSMXMPP: XMPPStreamDelegate {
         // Parse JSON to Object
         let jsonData = message.body!.data(using: .utf8)!
         let messageResponse = try! JSONDecoder().decode(TSMMessage.self, from: jsonData)
-        //
         
         self.xmppOutgoingMessageDelegate.willReceiveSendMessage(message: TSMMessageMapper.instances.transferMessage(tsmMessage: messageResponse))
         
@@ -288,12 +225,7 @@ extension TSMXMPP: XMPPStreamDelegate {
         //
         
         self.xmppIncomingMessageDelegate.receivedMessage(message: TSMMessageMapper.instances.transferMessage(tsmMessage: messageResponse))
-        
     }
-    
-    //    public func xmppStream(_ sender: XMPPStream!, didReceiveError error: DDXMLElement!) {
-    //
-    //    }
     
     public func xmppStream(_ sender: XMPPStream, didFailToSend message: XMPPMessage, error: Error) {
         self.xmppOutgoingMessageDelegate.didFailToSendMessage(error: error)
