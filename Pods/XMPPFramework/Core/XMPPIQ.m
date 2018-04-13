@@ -116,8 +116,6 @@
 		
 		if (eid)
 			[self addAttributeWithName:@"id" stringValue:eid];
-		else
-			[self addAttributeWithName:@"id" stringValue:[[NSUUID UUID] UUIDString]];
 		
 		if (childElement)
 			[self addChild:childElement];

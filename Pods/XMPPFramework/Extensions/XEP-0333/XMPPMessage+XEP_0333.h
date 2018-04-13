@@ -1,17 +1,16 @@
 #import "XMPPMessage.h"
 
-NS_ASSUME_NONNULL_BEGIN
 @interface XMPPMessage (XEP_0333)
 
-@property (nonatomic, readonly) BOOL hasChatMarker;
+- (BOOL)hasChatMarker;
 
-@property (nonatomic, readonly) BOOL hasMarkableChatMarker;
-@property (nonatomic, readonly) BOOL hasReceivedChatMarker;
-@property (nonatomic, readonly) BOOL hasDisplayedChatMarker;
-@property (nonatomic, readonly) BOOL hasAcknowledgedChatMarker;
+- (BOOL)hasMarkableChatMarker;
+- (BOOL)hasReceivedChatMarker;
+- (BOOL)hasDisplayedChatMarker;
+- (BOOL)hasAcknowledgedChatMarker;
 
-@property (nonatomic, readonly, nullable) NSString *chatMarker;
-@property (nonatomic, readonly, nullable) NSString *chatMarkerID;
+- (NSString *)chatMarker;
+- (NSString *)chatMarkerID;
 
 - (void)addMarkableChatMarker;
 - (void)addReceivedChatMarkerWithID:(NSString *)elementID;
@@ -27,4 +26,3 @@ NS_ASSUME_NONNULL_BEGIN
 - (XMPPMessage *)generateAcknowledgedChatMarkerIncludingThread:(BOOL)includingThread;
 
 @end
-NS_ASSUME_NONNULL_END

@@ -69,11 +69,11 @@ open class TSMXMPP: TSMXMPPClientDelegate {
     public func login(username: String, password: String) {
         
         do {
-            if !xmppStream.isConnected {
+            if !xmppStream.isConnected() {
                 try! xmppStream.connect(withTimeout: XMPPStreamTimeoutNone)
             }
             
-            if !xmppStream.isAuthenticated {
+            if !xmppStream.isAuthenticated() {
                 xmppStream.myJID = XMPPJID(user: username, domain: hostDomain, resource: resource)
                 passwordJID = password
             }
@@ -86,10 +86,10 @@ open class TSMXMPP: TSMXMPPClientDelegate {
     public func login(username: String) {
         
         do {
-            if !xmppStream.isConnected {
+            if !xmppStream.isConnected() {
                 try! xmppStream.connect(withTimeout: XMPPStreamTimeoutNone)
             }
-            if !xmppStream.isAuthenticated {
+            if !xmppStream.isAuthenticated() {
                 xmppStream.myJID = XMPPJID(user: username, domain: hostDomain, resource: resource)
                 passwordJID = "12345678"
             }
@@ -138,14 +138,14 @@ open class TSMXMPP: TSMXMPPClientDelegate {
         // Parse Object a JSON
         let encodeData = try? JSONEncoder().encode(message)
         
-        if self.xmppStream.isConnected {
+        if self.xmppStream.isConnected() {
 
-            messageTo.addBody(String(data: encodeData!, encoding: .utf8)!)
+            messageTo?.addBody(String(data: encodeData!, encoding: .utf8)!)
         }else {
             
             if(isAutoReconnecting) {
                 try! xmppStream.connect(withTimeout: XMPPStreamTimeoutNone)
-                messageTo.addBody(String(data: encodeData!, encoding: .utf8)!)
+                messageTo?.addBody(String(data: encodeData!, encoding: .utf8)!)
             }
         }
         
@@ -157,7 +157,7 @@ extension TSMXMPP: XMPPStreamDelegate {
 
     public func xmppStreamDidConnect(_ sender: XMPPStream) {
         print("Connected successlly.😀👍")
-        print("Loggin in as " + sender.myJID!.full)
+        print("Loggin in as " + sender.myJID!.full())
         
         do {
             try xmppStream.authenticate(withPassword: self.passwordJID)
@@ -189,10 +189,10 @@ extension TSMXMPP: XMPPStreamDelegate {
     public func xmppStream(_ sender: XMPPStream, willSend message: XMPPMessage) -> XMPPMessage? {
         
         print("Will send message 👉✉️")
-        print(message.to!, message.from!, message.body!)
+        print(message.to, message.from, message.body())
         
         // Parse JSON to Object
-        let jsonData = message.body!.data(using: .utf8)!
+        let jsonData = message.body().data(using: .utf8)!
         let messageResponse = try! JSONDecoder().decode(TSMMessage.self, from: jsonData)
         //
         
@@ -204,10 +204,10 @@ extension TSMXMPP: XMPPStreamDelegate {
     public func xmppStream(_ sender: XMPPStream, willReceive message: XMPPMessage) -> XMPPMessage? {
         
         print("Will receive send message 👉✉️")
-        print(message.to!, message.from!, message.body!)
+        print(message.to, message.from, message.body())
         
         // Parse JSON to Object
-        let jsonData = message.body!.data(using: .utf8)!
+        let jsonData = message.body().data(using: .utf8)!
         let messageResponse = try! JSONDecoder().decode(TSMMessage.self, from: jsonData)
         
         self.xmppOutgoingMessageDelegate.willReceiveSendMessage(message: TSMMessageMapper.instances.transferMessage(tsmMessage: messageResponse))
@@ -217,10 +217,10 @@ extension TSMXMPP: XMPPStreamDelegate {
     
     public func xmppStream(_ sender: XMPPStream, didReceive message: XMPPMessage) {
         print("Receive message 😃✉️ ")
-        print(message.to!, message.from!, message.body!)
-        
+        print(message.to, message.from, message.body())
+
         // Parse JSON to Object
-        let jsonData = message.body!.data(using: .utf8)!
+        let jsonData = message.body().data(using: .utf8)!
         let messageResponse = try! JSONDecoder().decode(TSMMessage.self, from: jsonData)
         //
         

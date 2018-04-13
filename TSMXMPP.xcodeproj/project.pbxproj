@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		39FA1ACADBD1E35B59ED5B23 /* Pods_TSMXMPP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE9A1D9C26CD56489540C6DC /* Pods_TSMXMPP.framework */; };
+		787208978B28394F952030BE /* Pods_TSMXMPP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F53A067A3EFE5163CA0983AE /* Pods_TSMXMPP.framework */; };
 		7D0994EA207BC2640023E11E /* TSMXMPP.h in Headers */ = {isa = PBXBuildFile; fileRef = 7D0994E8207BC2640023E11E /* TSMXMPP.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7D0994F1207BC28D0023E11E /* TSMXMPP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D0994F0207BC28D0023E11E /* TSMXMPP.swift */; };
 		7D09AEB0207EB94100BCB7BC /* Configurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D09AEAF207EB94100BCB7BC /* Configurations.swift */; };
@@ -22,8 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		272EC0F9E1DD664A58185030 /* Pods-TSMXMPP.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TSMXMPP.release.xcconfig"; path = "Pods/Target Support Files/Pods-TSMXMPP/Pods-TSMXMPP.release.xcconfig"; sourceTree = "<group>"; };
-		76A035071439DDECEF7C868E /* Pods-TSMXMPP.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TSMXMPP.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TSMXMPP/Pods-TSMXMPP.debug.xcconfig"; sourceTree = "<group>"; };
+		19EFFA6ADA9EF459755C9B50 /* Pods-TSMXMPP.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TSMXMPP.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TSMXMPP/Pods-TSMXMPP.debug.xcconfig"; sourceTree = "<group>"; };
 		7D0994E5207BC2640023E11E /* TSMXMPP.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TSMXMPP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D0994E8207BC2640023E11E /* TSMXMPP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSMXMPP.h; sourceTree = "<group>"; };
 		7D0994E9207BC2640023E11E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -37,7 +36,8 @@
 		7D51FAA6207CFF22005543CD /* TSMFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSMFile.swift; sourceTree = "<group>"; };
 		7D51FAA8207CFF47005543CD /* TSMMessageMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSMMessageMapper.swift; sourceTree = "<group>"; };
 		7D51FAAA207D07A2005543CD /* ManagerFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerFiles.swift; sourceTree = "<group>"; };
-		EE9A1D9C26CD56489540C6DC /* Pods_TSMXMPP.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TSMXMPP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B152DFA11946E8971C5B2A0B /* Pods-TSMXMPP.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TSMXMPP.release.xcconfig"; path = "Pods/Target Support Files/Pods-TSMXMPP/Pods-TSMXMPP.release.xcconfig"; sourceTree = "<group>"; };
+		F53A067A3EFE5163CA0983AE /* Pods_TSMXMPP.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TSMXMPP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,20 +45,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				39FA1ACADBD1E35B59ED5B23 /* Pods_TSMXMPP.framework in Frameworks */,
+				787208978B28394F952030BE /* Pods_TSMXMPP.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E2F91BE522BF2700DD21E65 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				19EFFA6ADA9EF459755C9B50 /* Pods-TSMXMPP.debug.xcconfig */,
+				B152DFA11946E8971C5B2A0B /* Pods-TSMXMPP.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		7D0994DB207BC2640023E11E = {
 			isa = PBXGroup;
 			children = (
 				7D0994E7207BC2640023E11E /* TSMXMPP */,
 				7D0994E6207BC2640023E11E /* Products */,
-				99FF60ACC38CC5EFD632EB53 /* Pods */,
-				E80CA8185C17B98CD31DB78F /* Frameworks */,
+				3E2F91BE522BF2700DD21E65 /* Pods */,
+				B3757DA04FC57281A1BEAF18 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -145,19 +154,10 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		99FF60ACC38CC5EFD632EB53 /* Pods */ = {
+		B3757DA04FC57281A1BEAF18 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				76A035071439DDECEF7C868E /* Pods-TSMXMPP.debug.xcconfig */,
-				272EC0F9E1DD664A58185030 /* Pods-TSMXMPP.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		E80CA8185C17B98CD31DB78F /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				EE9A1D9C26CD56489540C6DC /* Pods_TSMXMPP.framework */,
+				F53A067A3EFE5163CA0983AE /* Pods_TSMXMPP.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -180,7 +180,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7D0994ED207BC2640023E11E /* Build configuration list for PBXNativeTarget "TSMXMPP" */;
 			buildPhases = (
-				4E9CB6BBC0914D2FD027F014 /* [CP] Check Pods Manifest.lock */,
+				E059490C68AC5549D669C6FF /* [CP] Check Pods Manifest.lock */,
 				7D0994E0207BC2640023E11E /* Sources */,
 				7D0994E1207BC2640023E11E /* Frameworks */,
 				7D0994E2207BC2640023E11E /* Headers */,
@@ -240,7 +240,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4E9CB6BBC0914D2FD027F014 /* [CP] Check Pods Manifest.lock */ = {
+		E059490C68AC5549D669C6FF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -396,7 +396,7 @@
 		};
 		7D0994EE207BC2640023E11E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 76A035071439DDECEF7C868E /* Pods-TSMXMPP.debug.xcconfig */;
+			baseConfigurationReference = 19EFFA6ADA9EF459755C9B50 /* Pods-TSMXMPP.debug.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_MODULES = YES;
@@ -408,7 +408,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -432,7 +432,7 @@
 		};
 		7D0994EF207BC2640023E11E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 272EC0F9E1DD664A58185030 /* Pods-TSMXMPP.release.xcconfig */;
+			baseConfigurationReference = B152DFA11946E8971C5B2A0B /* Pods-TSMXMPP.release.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_MODULES = YES;
@@ -444,7 +444,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",

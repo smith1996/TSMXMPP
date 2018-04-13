@@ -27,7 +27,7 @@
 }
 
 
-- (void)setIsHome:(BOOL)home {
+- (void)setHome:(BOOL)home {
 	XMPP_VCARD_SET_EMPTY_CHILD(home && ![self isHome], @"HOME");
 }
 
@@ -37,7 +37,7 @@
 }
 
 
-- (void)setIsWork:(BOOL)work {
+- (void)setWork:(BOOL)work {
 	XMPP_VCARD_SET_EMPTY_CHILD(work && ![self isWork], @"WORK");
 }
 
@@ -47,7 +47,7 @@
 }
 
 
-- (void)setIsParcel:(BOOL)parcel {
+- (void)setParcel:(BOOL)parcel {
 	XMPP_VCARD_SET_EMPTY_CHILD(parcel && ![self isParcel], @"PARCEL");
 }
 
@@ -57,7 +57,7 @@
 }
 
 
-- (void)setIsPostal:(BOOL)postal {
+- (void)setPostal:(BOOL)postal {
 	XMPP_VCARD_SET_EMPTY_CHILD(postal && ![self isPostal], @"POSTAL");
 }
 
@@ -67,11 +67,11 @@
 }
 
 
-- (void)setIsDomestic:(BOOL)dom {
+- (void)setDomestic:(BOOL)dom {
 	XMPP_VCARD_SET_EMPTY_CHILD(dom && ![self isDomestic], @"DOM");
 	// INTL and DOM are mutually exclusive
 	if (dom) {
-		[self setIsInternational:NO];
+		[self setInternational:NO];
 	}
 }
 
@@ -81,11 +81,11 @@
 }
 
 
-- (void)setIsInternational:(BOOL)intl {
+- (void)setInternational:(BOOL)intl {
 	XMPP_VCARD_SET_EMPTY_CHILD(intl && ![self isInternational], @"INTL");
 	// INTL and DOM are mutually exclusive
 	if (intl) {
-		[self setIsDomestic:NO];
+		[self setDomestic:NO];
 	}
 }
 
@@ -95,7 +95,7 @@
 }
 
 
-- (void)setIsPreferred:(BOOL)pref {
+- (void)setPreferred:(BOOL)pref {
 	XMPP_VCARD_SET_EMPTY_CHILD(pref && ![self isPreferred], @"PREF");
 }
 

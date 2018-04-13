@@ -1,16 +1,15 @@
 #import <Foundation/Foundation.h>
 #import "XMPP.h"
 
-NS_ASSUME_NONNULL_BEGIN
-@protocol XMPPResource
+
+@protocol XMPPResource <NSObject>
 @required
 
-@property (nonatomic, readonly) XMPPJID *jid;
-@property (nonatomic, readonly) XMPPPresence *presence;
+- (XMPPJID *)jid;
+- (XMPPPresence *)presence;
 
-@property (nonatomic, readonly) NSDate *presenceDate;
+- (NSDate *)presenceDate;
 
 - (NSComparisonResult)compare:(id <XMPPResource>)another;
 
 @end
-NS_ASSUME_NONNULL_END

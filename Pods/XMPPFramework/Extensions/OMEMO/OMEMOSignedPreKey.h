@@ -25,7 +25,5 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype) initWithPreKeyId:(uint32_t)preKeyId
                         publicKey:(NSData*)publicKey NS_UNAVAILABLE;
 
-- (BOOL) isEqualToSignedPreKey:(OMEMOSignedPreKey*)signedPreKey;
-
 @end
 NS_ASSUME_NONNULL_END

@@ -2,7 +2,7 @@
 #import <CoreData/CoreData.h>
 
 #import "XMPPRoomLight.h"
-#import "XMPPRoomMessage.h"
+#import "XMPPFramework/XMPPRoomMessage.h"
 
 @interface XMPPRoomLightMessageCoreDataStorageObject : NSManagedObject <XMPPRoomMessage>
 

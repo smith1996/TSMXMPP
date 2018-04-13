@@ -1,8 +1,6 @@
 #import "XMPPMessage+XEP_0224.h"
 #import "NSXMLElement+XMPP.h"
 
-NSString *const XMLNS_ATTENTION = @"urn:xmpp:attention:0";
-
 @implementation XMPPMessage (XEP_0224)
 
 - (BOOL)isHeadLineMessage {

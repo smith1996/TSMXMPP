@@ -1,7 +1,7 @@
 PODS:
-  - AWSCore (2.6.14)
-  - AWSS3 (2.6.14):
-    - AWSCore (= 2.6.14)
+  - AWSCore (2.6.16)
+  - AWSS3 (2.6.16):
+    - AWSCore (= 2.6.16)
   - CocoaAsyncSocket (7.6.3)
   - CocoaLumberjack (3.4.1):
     - CocoaLumberjack/Default (= 3.4.1)
@@ -10,18 +10,14 @@ PODS:
   - CocoaLumberjack/Extensions (3.4.1):
     - CocoaLumberjack/Default
   - KissXML (5.2.2)
-  - libidn (1.33)
-  - XMPPFramework (4.0):
-    - XMPPFramework/default (= 4.0)
-  - XMPPFramework/default (4.0):
+  - XMPPFramework (3.7.0):
     - CocoaAsyncSocket (~> 7.6.0)
     - CocoaLumberjack
     - KissXML (~> 5.2.0)
-    - libidn (~> 1.33.0)
 
 DEPENDENCIES:
   - AWSS3 (~> 2.6.13)
-  - XMPPFramework (from `https://github.com/robbiehanson/XMPPFramework.git`, branch `master`)
+  - XMPPFramework (~> 3.7.0)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -30,27 +26,16 @@ SPEC REPOS:
     - CocoaAsyncSocket
     - CocoaLumberjack
     - KissXML
-    - libidn
-
-EXTERNAL SOURCES:
-  XMPPFramework:
-    :branch: master
-    :git: https://github.com/robbiehanson/XMPPFramework.git
-
-CHECKOUT OPTIONS:
-  XMPPFramework:
-    :commit: 510b6f80cb683541b22de4854bc040f480ff83bd
-    :git: https://github.com/robbiehanson/XMPPFramework.git
+    - XMPPFramework
 
 SPEC CHECKSUMS:
-  AWSCore: 8c883c2623d314dd82cca3809527784e1d1a02e5
-  AWSS3: a8cf89448c74637e34c46839ce5b5f7850f206e6
+  AWSCore: 314df68684e338310409c6a3b050e28932deb6ff
+  AWSS3: 218b24bc68387f0c715fd37168f9db6cbec9d0a7
   CocoaAsyncSocket: eafaa68a7e0ec99ead0a7b35015e0bf25d2c8987
   CocoaLumberjack: 2e258a064cacc8eb9a2aca318e24d02a0a7fd56d
   KissXML: 4418f32138aec43797891845d682b00fc8cd4677
-  libidn: 90fc1a62b60288dcf543f13f4ebca913f17d829f
-  XMPPFramework: 967df10e4dc4ba4ca5e04505fd2b2d2fd562d917
+  XMPPFramework: 6f99ad1afcdb0cdbec7192a8e4c542c3fc3de6f8
 
-PODFILE CHECKSUM: a68a407878701c84a7d9186172d8d13e5c6c8d08
+PODFILE CHECKSUM: e400da990dff290c45aded219322b08b69c8dcd5
 
 COCOAPODS: 1.5.0

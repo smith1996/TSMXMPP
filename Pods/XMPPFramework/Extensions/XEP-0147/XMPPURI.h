@@ -14,14 +14,13 @@
  *  e.g. xmpp:username@domain.com?subscribe 
  *  http://www.xmpp.org/extensions/xep-0147.html
  */
-NS_ASSUME_NONNULL_BEGIN
 @interface XMPPURI : NSObject
 
 /**
  * User JID. e.g. romeo@montague.net
  * Example: xmpp:romeo@montague.net
  */
-@property (nonatomic, strong, readonly, nullable) XMPPJID *jid;
+@property (nonatomic, strong, readonly) XMPPJID *jid;
 
 /**
  * Account JID. (Optional)
@@ -31,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
  * so the application would show a dialog with an outgoing message
  * to support@example.com from the user's account guest@example.com.
  */
-@property (nonatomic, strong, readonly, nullable) XMPPJID *accountJID;
+@property (nonatomic, strong, readonly) XMPPJID *accountJID;
 
 /** 
  * XMPP query action. e.g. subscribe
@@ -39,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
  *    xmpp:romeo@montague.net?subscribe
  * For full list: http://xmpp.org/registrar/querytypes.html
  */
-@property (nonatomic, strong, readonly, nullable) NSString *queryAction;
+@property (nonatomic, strong, readonly) NSString *queryAction;
 
 /**
  * XMPP query parameters. e.g. subject=Test
@@ -50,13 +49,13 @@ NS_ASSUME_NONNULL_BEGIN
  * {"subject": "Test Message",
  *  "body": "Here's a test message"}
  */
-@property (nonatomic, strong, readonly, nullable) NSDictionary<NSString*, NSString*> *queryParameters;
+@property (nonatomic, strong, readonly) NSDictionary *queryParameters;
 
 /** 
  * Generates URI string from jid, queryAction, and queryParameters
  * e.g. xmpp:romeo@montague.net?subscribe 
  */
-- (nullable NSString*) uriString;
+- (NSString*) uriString;
 
 // Parsing XMPP URIs
 - (instancetype) initWithURL:(NSURL*)url;
@@ -65,7 +64,6 @@ NS_ASSUME_NONNULL_BEGIN
 // Creating XMPP URIs
 - (instancetype) initWithJID:(XMPPJID*)jid
                  queryAction:(NSString*)queryAction
-             queryParameters:(nullable NSDictionary<NSString*, NSString*>*)queryParameters;
+             queryParameters:(NSDictionary*)queryParameters;
 
 @end
-NS_ASSUME_NONNULL_END

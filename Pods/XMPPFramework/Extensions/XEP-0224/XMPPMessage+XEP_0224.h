@@ -1,10 +1,8 @@
 #import "XMPPMessage.h"
-
-/** "urn:xmpp:attention:0" */
-FOUNDATION_EXPORT NSString *const XMLNS_ATTENTION;
+#define XMLNS_ATTENTION  @"urn:xmpp:attention:0"
 
 @interface XMPPMessage (XEP_0224) 
-@property (nonatomic, readonly) BOOL isHeadLineMessage;
-@property (nonatomic, readonly) BOOL isAttentionMessage;
-@property (nonatomic, readonly) BOOL isAttentionMessageWithBody;
+- (BOOL)isHeadLineMessage;
+- (BOOL)isAttentionMessage;
+- (BOOL)isAttentionMessageWithBody;
 @end

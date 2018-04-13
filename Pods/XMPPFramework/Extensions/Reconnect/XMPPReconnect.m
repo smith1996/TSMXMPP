@@ -18,10 +18,10 @@
 
 enum XMPPReconnectFlags
 {
-	kShouldReconnect        = 1 << 0,  // If set, disconnection was accidental, and autoReconnect may be used
-	kShouldRestartReconnect = 1 << 1,  // If set, another reconnection will be attempted after the current one fails
-	kManuallyStarted        = 1 << 2,  // If set, we were started manually via manualStart method
-	kQueryingDelegates      = 1 << 3,  // If set, we are awaiting response(s) from the delegate(s)
+	kShouldReconnect   = 1 << 0,  // If set, disconnection was accidental, and autoReconnect may be used
+	kMultipleChanges   = 1 << 1,  // If set, there have been reachability changes during a connection attempt
+	kManuallyStarted   = 1 << 2,  // If set, we were started manually via manualStart method
+	kQueryingDelegates = 1 << 3,  // If set, we are awaiting response(s) from the delegate(s)
 };
 
 enum XMPPReconnectConfig
@@ -33,26 +33,6 @@ enum XMPPReconnectConfig
 // SCNetworkConnectionFlags was renamed to SCNetworkReachabilityFlags in 10.6
 typedef SCNetworkConnectionFlags SCNetworkReachabilityFlags;
 #endif
-
-@interface XMPPReconnect() {
-    Byte flags;
-    Byte config;
-    NSTimeInterval reconnectDelay;
-    
-    dispatch_source_t reconnectTimer;
-    NSTimeInterval reconnectTimerInterval;
-    
-    SCNetworkReachabilityRef reachability;
-    
-    int reconnectTicket;
-    
-#if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_5
-    SCNetworkConnectionFlags previousReachabilityFlags;
-#else
-    SCNetworkReachabilityFlags previousReachabilityFlags;
-#endif
-}
-@end
 
 @interface XMPPReconnect (PrivateAPI)
 
@@ -166,21 +146,21 @@ typedef SCNetworkConnectionFlags SCNetworkReachabilityFlags;
 		flags &= ~kShouldReconnect;
 }
 
-- (BOOL)shouldRestartReconnect
+- (BOOL)multipleReachabilityChanges
 {
 	NSAssert(dispatch_get_specific(moduleQueueTag), @"Invoked private method outside moduleQueue");
 	
-	return (flags & kShouldRestartReconnect) ? YES : NO;
+	return (flags & kMultipleChanges) ? YES : NO;
 }
 
-- (void)setShouldRestartReconnect:(BOOL)flag
+- (void)setMultipleReachabilityChanges:(BOOL)flag
 {
 	NSAssert(dispatch_get_specific(moduleQueueTag), @"Invoked private method outside moduleQueue");
 	
 	if (flag)
-		flags |= kShouldRestartReconnect;
+		flags |= kMultipleChanges;
 	else
-		flags &= ~kShouldRestartReconnect;
+		flags &= ~kMultipleChanges;
 }
 
 - (BOOL)manuallyStarted
@@ -283,7 +263,7 @@ typedef SCNetworkConnectionFlags SCNetworkReachabilityFlags;
 	// the stream opens but prior to authentication completing.
 	// If this happens we still want to abide by the previous shouldReconnect setting.
 	
-	[self setShouldRestartReconnect:NO];
+	[self setMultipleReachabilityChanges:NO];
 	[self setManuallyStarted:NO];
 	
 	reconnectTicket++;
@@ -350,7 +330,7 @@ typedef SCNetworkConnectionFlags SCNetworkReachabilityFlags;
 		[multicastDelegate xmppReconnect:self didDetectAccidentalDisconnect:reachabilityFlags];
 	}
 	
-	if ([self shouldRestartReconnect])
+	if ([self multipleReachabilityChanges])
 	{
 		// While the previous connection attempt was in progress, the reachability of the xmpp host changed.
 		// This means that while the previous attempt failed, an attempt now might succeed.
@@ -378,15 +358,6 @@ static void XMPPReconnectReachabilityCallback(SCNetworkReachabilityRef target, S
 	@autoreleasepool {
 	
 		XMPPReconnect *instance = (__bridge XMPPReconnect *)info;
-        
-        if (instance->previousReachabilityFlags != flags) {
-            // It's possible that the reachability of our xmpp host has changed in the middle of either
-            // a reconnection attempt or while querying our delegates for permission to attempt reconnect.
-            
-            // In such case it makes sense to abort the current reconnection attempt (if any) instead of waiting for it to time out.
-            [instance setShouldRestartReconnect:YES];
-        }
-        
 		[instance maybeAttemptReconnectWithReachabilityFlags:flags];
 	}
 }
@@ -411,10 +382,6 @@ static void XMPPReconnectReachabilityCallback(SCNetworkReachabilityRef target, S
 		
 		dispatch_source_set_event_handler(reconnectTimer, ^{ @autoreleasepool {
 			
-            // It is likely that reconnectTimerInterval is shorter than socket's timeout value.
-            // In such case we want to abort the current connection attempt (if any) and start a new one.
-            [self setShouldRestartReconnect:YES];
-            
 			[self maybeAttemptReconnect];
 			
 		}});
@@ -627,24 +594,21 @@ static void XMPPReconnectReachabilityCallback(SCNetworkReachabilityRef target, S
 					
 					if (shouldAttemptReconnect)
 					{
-						[self setShouldRestartReconnect:NO];
+						[self setMultipleReachabilityChanges:NO];
 						previousReachabilityFlags = reachabilityFlags;
 						
                         if (self.usesOldSchoolSecureConnect)
                         {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                             [xmppStream oldSchoolSecureConnectWithTimeout:XMPPStreamTimeoutNone error:nil];
-#pragma clang diagnostic pop
                         }
                         else
                         {
                             [xmppStream connectWithTimeout:XMPPStreamTimeoutNone error:nil];
                         }
 					}
-					else if ([self shouldRestartReconnect])
+					else if ([self multipleReachabilityChanges])
 					{
-						[self setShouldRestartReconnect:NO];
+						[self setMultipleReachabilityChanges:NO];
 						previousReachabilityFlags = IMPOSSIBLE_REACHABILITY_FLAGS;
 						
 						[self maybeAttemptReconnect];
@@ -667,10 +631,19 @@ static void XMPPReconnectReachabilityCallback(SCNetworkReachabilityRef target, S
 		{
 			// The xmpp stream is already attempting a connection.
 			
-            if ([self shouldRestartReconnect])
-            {
-                [xmppStream abortConnecting];
-            }
+			if (reachabilityFlags != previousReachabilityFlags)
+			{
+				// It seems that the reachability of our xmpp host has changed in the middle of either
+				// a reconnection attempt or while querying our delegates for permission to attempt reconnect.
+				// 
+				// This may mean that the current attempt will fail,
+				// but an another attempt after the failure will succeed.
+				// 
+				// We make a note of the multiple changes,
+				// and if the current attempt fails, we'll try again after a short delay.
+				
+				[self setMultipleReachabilityChanges:YES];
+			}
 		}
 	}
 }

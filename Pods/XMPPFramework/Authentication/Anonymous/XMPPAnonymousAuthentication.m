@@ -70,11 +70,11 @@
 	
 	if ([[authResponse name] isEqualToString:@"success"])
 	{
-		return XMPPHandleAuthResponseSuccess;
+		return XMPP_AUTH_SUCCESS;
 	}
 	else
 	{
-		return XMPPHandleAuthResponseFailed;
+		return XMPP_AUTH_FAIL;
 	}
 }
 

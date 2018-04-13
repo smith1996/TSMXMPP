@@ -1,7 +1,6 @@
 #import "NSXMLElement+XEP_0203.h"
 #import "XMPPDateTimeProfiles.h"
 #import "NSXMLElement+XMPP.h"
-#import "XMPPJID.h"
 
 #if ! __has_feature(objc_arc)
 #warning This file must be compiled with ARC. Use -fobjc-arc flag (or convert project to ARC).
@@ -11,11 +10,27 @@
 
 - (BOOL)wasDelayed
 {
-    return [self anyDelayedDeliveryChildElement] != nil;
+	NSXMLElement *delay;
+	
+	delay = [self elementForName:@"delay" xmlns:@"urn:xmpp:delay"];
+	if (delay)
+	{
+		return YES;
+	}
+	
+	delay = [self elementForName:@"x" xmlns:@"jabber:x:delay"];
+	if (delay)
+	{
+		return YES;
+	}
+	
+	return NO;
 }
 
 - (NSDate *)delayedDeliveryDate
 {
+	NSXMLElement *delay;
+	
 	// From XEP-0203 (Delayed Delivery)
 	//
 	// <delay xmlns='urn:xmpp:delay'
@@ -25,7 +40,7 @@
 	// The format [of the stamp attribute] MUST adhere to the dateTime format
 	// specified in XEP-0082 and MUST be expressed in UTC.
 	
-	NSXMLElement *delay = [self delayedDeliveryChildElement];
+	delay = [self elementForName:@"delay" xmlns:@"urn:xmpp:delay"];
 	if (delay)
 	{
 		NSString *stampValue = [delay attributeStringValueForName:@"stamp"];
@@ -45,12 +60,12 @@
 	//     from='capulet.com'
 	//    stamp='20020910T23:08:25'>
 	
-	NSXMLElement *legacyDelay = [self legacyDelayedDeliveryChildElement];
-	if (legacyDelay)
+	delay = [self elementForName:@"x" xmlns:@"jabber:x:delay"];
+	if (delay)
 	{
 		NSDate *stamp;
 		
-		NSString *stampValue = [legacyDelay attributeStringValueForName:@"stamp"];
+		NSString *stampValue = [delay attributeStringValueForName:@"stamp"];
 		
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 		[dateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
@@ -64,32 +79,6 @@
 	}
 	
 	return nil;
-}
-
-- (XMPPJID *)delayedDeliveryFrom
-{
-    NSString *delayedDeliveryFromString = [[self anyDelayedDeliveryChildElement] attributeStringValueForName:@"from"];
-    return delayedDeliveryFromString ? [XMPPJID jidWithString:delayedDeliveryFromString] : nil;
-}
-
-- (NSString *)delayedDeliveryReasonDescription
-{
-    return [self anyDelayedDeliveryChildElement].stringValue;
-}
-
-- (NSXMLElement *)delayedDeliveryChildElement
-{
-    return [self elementForName:@"delay" xmlns:@"urn:xmpp:delay"];
-}
-
-- (NSXMLElement *)legacyDelayedDeliveryChildElement
-{
-    return [self elementForName:@"x" xmlns:@"jabber:x:delay"];
-}
-
-- (NSXMLElement *)anyDelayedDeliveryChildElement
-{
-    return [self delayedDeliveryChildElement] ?: [self legacyDelayedDeliveryChildElement];
 }
 
 @end

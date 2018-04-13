@@ -67,7 +67,7 @@
 }
 
 
-- (void)setIsHome:(BOOL)home {
+- (void)setHome:(BOOL)home {
 	XMPP_VCARD_SET_EMPTY_CHILD(home && ![self isHome], @"HOME");
 }
 
@@ -77,7 +77,7 @@
 }
 
 
-- (void)setIsWork:(BOOL)work {
+- (void)setWork:(BOOL)work {
 	XMPP_VCARD_SET_EMPTY_CHILD(work && ![self isWork], @"WORK");
 }
 
@@ -87,7 +87,7 @@
 }
 
 
-- (void)setIsInternet:(BOOL)internet {
+- (void)setInternet:(BOOL)internet {
 	XMPP_VCARD_SET_EMPTY_CHILD(internet && ![self isInternet], @"INTERNET");
 }
 
@@ -97,7 +97,7 @@
 }
 
 
-- (void)setIsX400:(BOOL)x400 {
+- (void)setX400:(BOOL)x400 {
 	XMPP_VCARD_SET_EMPTY_CHILD(x400 && ![self isX400], @"X400");
 }
 
@@ -107,7 +107,7 @@
 }
 
 
-- (void)setIsPreferred:(BOOL)pref {
+- (void)setPreferred:(BOOL)pref {
 	XMPP_VCARD_SET_EMPTY_CHILD(pref && ![self isPreferred], @"PREF");
 }
 
@@ -117,7 +117,7 @@
 }
 
 
-- (void)setIsUserid:(NSString *)userid {
+- (void)setUserid:(NSString *)userid {
 	XMPP_VCARD_SET_STRING_CHILD(userid, @"USERID");
 }
 

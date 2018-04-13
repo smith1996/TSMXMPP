@@ -97,6 +97,22 @@
 
 @synthesize storage = storage;
 
+- (id)init
+{
+	// This will cause a crash - it's designed to.
+	// Only the init methods listed in XMPPStreamManagement.h are supported.
+	
+	return [self initWithStorage:nil dispatchQueue:NULL];
+}
+
+- (id)initWithDispatchQueue:(dispatch_queue_t)queue
+{
+	// This will cause a crash - it's designed to.
+	// Only the init methods listed in XMPPStreamManagement.h are supported.
+	
+	return [self initWithStorage:nil dispatchQueue:queue];
+}
+
 - (id)initWithStorage:(id <XMPPStreamManagementStorage>)inStorage
 {
 	return [self initWithStorage:inStorage dispatchQueue:NULL];
@@ -632,8 +648,8 @@
  *   YES if the stream was resumed.
  *   NO otherwise.
 **/
-- (BOOL)didResumeWithAckedStanzaIds:(NSArray<id> * _Nullable * _Nullable)stanzaIdsPtr
-                     serverResponse:(NSXMLElement * _Nullable * _Nullable)responsePtr
+- (BOOL)didResumeWithAckedStanzaIds:(NSArray **)stanzaIdsPtr
+					 serverResponse:(NSXMLElement **)responsePtr
 {
 	__block BOOL result = NO;
 	__block NSArray *stanzaIds = nil;
@@ -668,11 +684,11 @@
  * this method should return XMPP_BIND_FAIL and set an appropriate error message.
  * 
  * If binding isn't needed (for example, because custom SASL authentication already handled it),
- * this method should return XMPPBindResultSuccess.
+ * this method should return XMPP_BIND_SUCCESS.
  * In this case, xmppStream will immediately move to its post-binding operations.
  *
  * Otherwise this method should send whatever stanzas are needed to begin the binding process.
- * And then return XMPPBindResultContinue.
+ * And then return XMPP_BIND_CONTINUE.
  *
  * This method is called by automatically XMPPStream.
  * You MUST NOT invoke this method manually.
@@ -695,19 +711,19 @@
 	
 	if (![self canResumeStreamWithResumptionId:resumptionId timeout:timeout lastDisconnect:lastDisconnect])
 	{
-		return XMPPBindResultFailFallback;
+		return XMPP_BIND_FAIL_FALLBACK;
 	}
 	
 	// Start the resume proces
 	[self sendResumeRequestWithResumptionId:resumptionId];
 	
-	return XMPPBindResultContinue;
+	return XMPP_BIND_CONTINUE;
 }
 
 /**
  * After the custom binding process has started, all incoming xmpp stanzas are routed to this method.
  * The method should process the stanza as appropriate, and return the coresponding result.
- * If the process is not yet complete, it should return XMPPBindResultContinue,
+ * If the process is not yet complete, it should return XMPP_BIND_CONTINUE,
  * meaning the xmpp stream will continue to forward all incoming xmpp stanzas to this method.
  *
  * This method is called automatically by XMPPStream.
@@ -723,7 +739,7 @@
 	{
 		[self processResumed:element];
 		
-		return XMPPBindResultSuccess;
+		return XMPP_BIND_SUCCESS;
 	}
 	else
 	{
@@ -739,7 +755,7 @@
 			prev_unackedByServer = nil;
 		}});
 		
-		return XMPPBindResultFailFallback;
+		return XMPP_BIND_FAIL_FALLBACK;
 	}
 }
 

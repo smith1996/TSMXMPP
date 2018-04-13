@@ -83,11 +83,11 @@
 	
 	if ([[authResponse attributeStringValueForName:@"type"] isEqualToString:@"error"])
 	{
-		return XMPPHandleAuthResponseFailed;
+		return XMPP_AUTH_FAIL;
 	}
 	else
 	{
-		return XMPPHandleAuthResponseSuccess;
+		return XMPP_AUTH_SUCCESS;
 	}
 }
 

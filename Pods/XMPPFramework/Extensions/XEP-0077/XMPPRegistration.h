@@ -10,7 +10,6 @@
 
 #define _XMPP_REGISTRATION_H
 
-NS_ASSUME_NONNULL_BEGIN
 @interface XMPPRegistration : XMPPModule {
   XMPPIDTracker *xmppIDTracker;
 }
@@ -34,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 *
 * @see cancelRegistration
 */
-- (BOOL)cancelRegistrationUsingPassword:(nullable NSString *)password;
+- (BOOL)cancelRegistrationUsingPassword:(NSString *)password;
 
 /**
 * This method will attempt to cancel the current user's registration. The user *MUST* be
@@ -71,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
 * @param sender XMPPRegistration object invoking this delegate method.
 * @param error NSError containing more details of the failure.
 */
-- (void)passwordChangeFailed:(XMPPRegistration *)sender withError:(nullable NSError *)error;
+- (void)passwordChangeFailed:(XMPPRegistration *)sender withError:(NSError *)error;
 
 /**
 * Implement this method when calling [regInstance cancelRegistration] or a variation. It
@@ -90,8 +89,6 @@ NS_ASSUME_NONNULL_BEGIN
 * @param sender XMPPRegistration object invoking this delegate method.
 * @param error NSError containing more details of the failure.
 */
-- (void)cancelRegistrationFailed:(XMPPRegistration *)sender withError:(nullable NSError *)error;
+- (void)cancelRegistrationFailed:(XMPPRegistration *)sender withError:(NSError *)error;
 
 @end
-
-NS_ASSUME_NONNULL_END

@@ -4,7 +4,6 @@
 
 #import "XMPPStream.h"
 #import "XMPPModule.h"
-#import "XMPPParser.h"
 
 // Define the various states we'll use to track our progress
 typedef NS_ENUM(NSInteger, XMPPStreamState) {
@@ -23,8 +22,6 @@ typedef NS_ENUM(NSInteger, XMPPStreamState) {
 	STATE_XMPP_CONNECTED,
 };
 
-NS_ASSUME_NONNULL_BEGIN
-
 /**
  * It is recommended that storage classes cache a stream's myJID.
  * This prevents them from constantly querying the property from the xmppStream instance,
@@ -38,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 **/
 extern NSString *const XMPPStreamDidChangeMyJIDNotification;
 
-@interface XMPPStream (/* Internal */) <XMPPParserDelegate>
+@interface XMPPStream (/* Internal */)
 
 /**
  * XMPPStream maintains thread safety by dispatching  through the internal serial xmppQueue.
@@ -111,8 +108,8 @@ extern NSString *const XMPPStreamDidChangeMyJIDNotification;
  * xmppStream:didSendCustomElement:
  * xmppStream:didReceiveCustomElement:
 **/
-- (void)registerCustomElementNames:(NSSet<NSString*> *)names;
-- (void)unregisterCustomElementNames:(NSSet<NSString*> *)names;
+- (void)registerCustomElementNames:(NSSet *)names;
+- (void)unregisterCustomElementNames:(NSSet *)names;
 
 @end
 
@@ -123,10 +120,6 @@ extern NSString *const XMPPStreamDidChangeMyJIDNotification;
  * Normally removing a delegate is a synchronous operation, but due to multiple dispatch_sync operations,
  * it must occasionally be done asynchronously to avoid deadlock.
 **/
-- (void)removeDelegate:(id)delegate
-         delegateQueue:(dispatch_queue_t)delegateQueue
-         synchronously:(BOOL)synchronously;
+- (void)removeDelegate:(id)delegate delegateQueue:(dispatch_queue_t)delegateQueue synchronously:(BOOL)synchronously;
 
 @end
-
-NS_ASSUME_NONNULL_END

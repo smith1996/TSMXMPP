@@ -7,7 +7,6 @@
 
 
 @implementation XMPPJID
-@synthesize user, domain, resource;
 
 + (BOOL)validateDomain:(NSString *)domain
 {
@@ -93,19 +92,9 @@
 		}
 	}
 	
-    NSString *prepUser = nil;
-    NSString *prepDomain = nil;
-    NSString *prepResource = nil;
-    
-    if (rawUser) {
-        prepUser = [XMPPStringPrep prepNode:rawUser];
-    }
-    if (rawDomain) {
-        prepDomain = [XMPPStringPrep prepDomain:rawDomain];
-    }
-    if (rawResource) {
-        prepResource = [XMPPStringPrep prepResource:rawResource];
-    }
+	NSString *prepUser = [XMPPStringPrep prepNode:rawUser];
+	NSString *prepDomain = [XMPPStringPrep prepDomain:rawDomain];
+	NSString *prepResource = [XMPPStringPrep prepResource:rawResource];
 	
 	if ([XMPPJID validateUser:prepUser domain:prepDomain resource:prepResource])
 	{

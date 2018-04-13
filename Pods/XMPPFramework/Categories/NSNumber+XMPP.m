@@ -12,7 +12,7 @@
 	return [[NSNumber alloc] xmpp_initWithPtr:ptr];
 }
 
-- (instancetype)xmpp_initWithPtr:(const void *)ptr
+- (id)xmpp_initWithPtr:(const void *)ptr
 {
 	return [self initWithLong:(long)ptr];
 }

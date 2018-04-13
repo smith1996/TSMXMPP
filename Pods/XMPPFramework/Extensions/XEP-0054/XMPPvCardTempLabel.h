@@ -12,15 +12,14 @@
 
 #import "XMPPvCardTempAdrTypes.h"
 
-NS_ASSUME_NONNULL_BEGIN
+
 @interface XMPPvCardTempLabel : XMPPvCardTempAdrTypes
 
 
-@property (nonatomic, strong, nullable) NSArray<NSString*> *lines;
+@property (nonatomic, weak) NSArray *lines;
 
 
 + (XMPPvCardTempLabel *)vCardLabelFromElement:(NSXMLElement *)elem;
 
 
 @end
-NS_ASSUME_NONNULL_END

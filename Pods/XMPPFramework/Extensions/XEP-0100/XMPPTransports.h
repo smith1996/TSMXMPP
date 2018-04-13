@@ -4,10 +4,13 @@
 
 @class XMPPStream;
 
-NS_ASSUME_NONNULL_BEGIN
-@interface XMPPTransports : NSObject
 
-- (instancetype)initWithStream:(XMPPStream *)xmppStream;
+@interface XMPPTransports : NSObject
+{
+	XMPPStream *xmppStream;
+}
+
+- (id)initWithStream:(XMPPStream *)xmppStream;
 
 @property (nonatomic, strong, readonly) XMPPStream *xmppStream;
 
@@ -18,4 +21,3 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)unregisterLegacyService:(NSString *)service;
 
 @end
-NS_ASSUME_NONNULL_END

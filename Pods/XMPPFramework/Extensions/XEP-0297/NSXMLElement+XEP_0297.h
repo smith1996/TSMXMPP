@@ -6,34 +6,32 @@
 @class XMPPMessage;
 @class XMPPPresence;
 
-NS_ASSUME_NONNULL_BEGIN
 @interface NSXMLElement (XEP_0297)
 
 #pragma mark Forwarded Stanza 
 
-@property (nonatomic, readonly, nullable) NSXMLElement *forwardedStanza;
+- (NSXMLElement *)forwardedStanza;
 
-@property (nonatomic, readonly) BOOL hasForwardedStanza;
+- (BOOL)hasForwardedStanza;
 
-@property (nonatomic, readonly) BOOL isForwardedStanza;
+- (BOOL)isForwardedStanza;
 
 #pragma mark Delayed Delivery Date
 
-@property (nonatomic, readonly, nullable) NSDate *forwardedStanzaDelayedDeliveryDate;
+- (NSDate *)forwardedStanzaDelayedDeliveryDate;
 
 #pragma mark XMPPElement
 
-@property (nonatomic, readonly, nullable) XMPPIQ *forwardedIQ;
+- (XMPPIQ *)forwardedIQ;
 
-@property (nonatomic, readonly) BOOL hasForwardedIQ;
+- (BOOL)hasForwardedIQ;
 
-@property (nonatomic, readonly, nullable) XMPPMessage *forwardedMessage;
+- (XMPPMessage *)forwardedMessage;
 
-@property (nonatomic, readonly) BOOL hasForwardedMessage;
+- (BOOL)hasForwardedMessage;
 
-@property (nonatomic, readonly, nullable) XMPPPresence *forwardedPresence;
+- (XMPPPresence *)forwardedPresence;
 
-@property (nonatomic, readonly) BOOL hasForwardedPresence;
+- (BOOL)hasForwardedPresence;
 
 @end
-NS_ASSUME_NONNULL_END

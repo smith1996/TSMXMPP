@@ -9,11 +9,4 @@
 	return [[self elementForName:@"nick" xmlns:XMLNS_NICK] stringValue];
 }
 
-- (void)addNick:(NSString *)nick
-{
-    NSXMLElement *nickElement = [NSXMLElement elementWithName:@"nick" xmlns:XMLNS_NICK];
-    [nickElement addChild:[NSXMLNode textWithStringValue:nick]];
-    [self addChild:nickElement];
-}
-
 @end

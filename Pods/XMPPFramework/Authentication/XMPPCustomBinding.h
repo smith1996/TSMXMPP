@@ -3,26 +3,20 @@
 
 typedef NS_ENUM(NSInteger, XMPPBindResult) {
 	
-	XMPPBindResultContinue,      // The custom binding process is still ongoing.
+	XMPP_BIND_CONTINUE,      // The custom binding process is still ongoing.
 	
-	XMPPBindResultSuccess,       // Custom binding succeeded.
+	XMPP_BIND_SUCCESS,       // Custom binding succeeded.
 	                         // The stream should continue normal post-binding operation.
 	
-	XMPPBindResultFailFallback, // Custom binding failed.
+	XMPP_BIND_FAIL_FALLBACK, // Custom binding failed.
 	                         // The stream should fallback to the standard binding protocol.
 	
-	XMPPBindResultFailAbort     // Custom binding failed.
+	XMPP_BIND_FAIL_ABORT     // Custom binding failed.
 	                         // The stream must abort the binding process.
 	                         // Further, because the stream is in a bad state (authenticated, but
 	                         // unable to complete the full handshake) it must immediately disconnect.
 	                         // The given NSError will be reported via xmppStreamDidDisconnect:withError:
 };
-
-// Legacy fallback for external modules
-#define XMPP_BIND_CONTINUE XMPPBindResultContinue
-#define XMPP_BIND_SUCCESS XMPPBindResultSuccess
-#define XMPP_BIND_FAIL_FALLBACK XMPPBindResultFailFallback
-#define XMPP_BIND_FAIL_ABORT XMPPBindResultFailAbort
 
 /**
  * Binding a JID resource is a standard part of the authentication process,
@@ -38,7 +32,6 @@ typedef NS_ENUM(NSInteger, XMPPBindResult) {
  * A custom binding procedure may be plugged into an XMPPStream instance via the delegate method:
  * - (id <XMPPCustomBinding>)xmppStreamWillBind;
 **/
-NS_ASSUME_NONNULL_BEGIN
 @protocol XMPPCustomBinding <NSObject>
 @required
 
@@ -46,16 +39,16 @@ NS_ASSUME_NONNULL_BEGIN
  * Attempts to start the custom binding process.
  *
  * If it isn't possible to start the process (perhaps due to missing information),
- * this method should return XMPPBindResultFailFallback or XMPPBindResultFailAbort.
+ * this method should return XMPP_BIND_FAIL_FALLBACK or XMPP_BIND_FAIL_ABORT.
  *
- * (The error message is only used by xmppStream if this method returns XMPPBindResultFailAbort.)
+ * (The error message is only used by xmppStream if this method returns XMPP_BIND_FAIL_ABORT.)
  * 
  * If binding isn't needed (for example, because custom SASL authentication already handled it),
- * this method should return XMPPBindResultSuccess.
+ * this method should return XMPP_BIND_SUCCESS.
  * In this case, xmppStream will immediately move to its post-binding operations.
  *
  * Otherwise this method should send whatever stanzas are needed to begin the binding process.
- * And then return XMPPBindResultContinue.
+ * And then return XMPP_BIND_CONTINUE.
  *
  * This method is called by automatically XMPPStream.
  * You MUST NOT invoke this method manually.
@@ -65,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * After the custom binding process has started, all incoming xmpp stanzas are routed to this method.
  * The method should process the stanza as appropriate, and return the coresponding result.
- * If the process is not yet complete, it should return XMPPBindResultContinue,
+ * If the process is not yet complete, it should return XMPP_BIND_CONTINUE,
  * meaning the xmpp stream will continue to forward all incoming xmpp stanzas to this method.
  *
  * This method is called automatically by XMPPStream.
@@ -96,4 +89,3 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)shouldSkipStartSessionAfterSuccessfulBinding;
 
 @end
-NS_ASSUME_NONNULL_END

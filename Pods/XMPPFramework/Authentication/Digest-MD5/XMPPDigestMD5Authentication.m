@@ -109,7 +109,7 @@
 	
 	if (![[authResponse name] isEqualToString:@"challenge"])
 	{
-		return XMPPHandleAuthResponseFailed;
+		return XMPP_AUTH_FAIL;
 	}
 	
 	// Extract components from incoming challenge
@@ -159,7 +159,7 @@
 	[xmppStream sendAuthElement:response];
 	awaitingChallenge = NO;
 	
-	return XMPPHandleAuthResponseContinue;
+	return XMPP_AUTH_CONTINUE;
 }
 
 - (XMPPHandleAuthResponse)handleAuth2:(NSXMLElement *)authResponse
@@ -176,7 +176,7 @@
 			// We're getting another challenge?
 			// Not sure what this could possibly be, so for now we'll assume it's a failure.
 			
-			return XMPPHandleAuthResponseFailed;
+			return XMPP_AUTH_FAIL;
 		}
 		else
 		{
@@ -191,16 +191,16 @@
 			
 			[xmppStream sendAuthElement:response];
 			
-			return XMPPHandleAuthResponseContinue;
+			return XMPP_AUTH_CONTINUE;
 		}
 	}
 	else if ([[authResponse name] isEqualToString:@"success"])
 	{
-		return XMPPHandleAuthResponseSuccess;
+		return XMPP_AUTH_SUCCESS;
 	}
 	else
 	{
-		return XMPPHandleAuthResponseFailed;
+		return XMPP_AUTH_FAIL;
 	}	
 }
 

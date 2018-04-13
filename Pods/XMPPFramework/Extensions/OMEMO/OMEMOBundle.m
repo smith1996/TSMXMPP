@@ -32,18 +32,4 @@
     return self;
 }
 
-- (BOOL) isEqual:(id)object {
-    if ([object isKindOfClass:[OMEMOBundle class]]) {
-        return [self isEqualToBundle:object];
-    }
-    return NO;
-}
-
-- (BOOL) isEqualToBundle:(OMEMOBundle*)bundle {
-    return self.deviceId == bundle.deviceId &&
-    [self.identityKey isEqualToData:bundle.identityKey] &&
-    [self.signedPreKey isEqualToSignedPreKey:bundle.signedPreKey] &&
-    [self.preKeys isEqualToArray:bundle.preKeys];
-}
-
 @end

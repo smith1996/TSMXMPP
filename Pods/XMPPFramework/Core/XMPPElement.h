@@ -3,7 +3,6 @@
 
 @import KissXML;
 
-NS_ASSUME_NONNULL_BEGIN
 
 /**
  * The XMPPElement provides the base class for XMPPIQ, XMPPMessage & XMPPPresence.
@@ -18,13 +17,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark Common Jabber Methods
 
-@property (nonatomic, nullable, readonly) NSString *elementID;
+- (NSString *)elementID;
 
-@property (nonatomic, nullable, readonly) XMPPJID *to;
-@property (nonatomic, nullable, readonly) XMPPJID *from;
+- (XMPPJID *)to;
+- (XMPPJID *)from;
 
-@property (nonatomic, nullable, readonly) NSString *toStr;
-@property (nonatomic, nullable, readonly) NSString *fromStr;
+- (NSString *)toStr;
+- (NSString *)fromStr;
 
 #pragma mark To and From Methods
 
@@ -41,5 +40,3 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isTo:(XMPPJID *)to from:(XMPPJID *)from options:(XMPPJIDCompareOptions)mask;
 
 @end
-
-NS_ASSUME_NONNULL_END

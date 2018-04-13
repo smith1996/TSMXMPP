@@ -9,14 +9,13 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
+
 @interface XEP_0223 : NSObject
 
 /**
  * This method returns the recommended configuration options to configure a pubsub node for storing private data.
  * It may be passed directly to the publishToNoe:::: method of XMPPPubSub.
 **/
-+ (NSDictionary<NSString*,id> *)privateStoragePubSubOptions;
++ (NSDictionary *)privateStoragePubSubOptions;
 
 @end
-NS_ASSUME_NONNULL_END

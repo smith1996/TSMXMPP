@@ -29,16 +29,4 @@
     return self;
 }
 
-- (BOOL) isEqual:(id)object {
-    if ([object isKindOfClass:[OMEMOSignedPreKey class]]) {
-        return [self isEqualToSignedPreKey:object];
-    }
-    return NO;
-}
-
-- (BOOL) isEqualToSignedPreKey:(OMEMOSignedPreKey*)signedPreKey {
-    return [super isEqualToPreKey:signedPreKey] &&
-    [self.signature isEqualToData:signedPreKey.signature];
-}
-
 @end

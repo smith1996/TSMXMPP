@@ -3,8 +3,9 @@
 
 #define _XMPP_ATTENTION_MODULE_H
 
-NS_ASSUME_NONNULL_BEGIN
-@interface XMPPAttentionModule : XMPPModule
+@interface XMPPAttentionModule : XMPPModule {
+    BOOL respondsToQueries;
+}
 
 /**
  * Whether or not the module should respond to incoming attention request queries.
@@ -21,4 +22,3 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 - (void)xmppAttention:(XMPPAttentionModule *)sender didReceiveAttentionHeadlineMessage:(XMPPMessage *)attentionRequest;
 @end
-NS_ASSUME_NONNULL_END

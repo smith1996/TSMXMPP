@@ -32,7 +32,5 @@ NS_ASSUME_NONNULL_BEGIN
 /** Not available, use designated initializer */
 - (instancetype) init NS_UNAVAILABLE;
 
-- (BOOL) isEqualToBundle:(OMEMOBundle*)bundle;
-
 @end
 NS_ASSUME_NONNULL_END

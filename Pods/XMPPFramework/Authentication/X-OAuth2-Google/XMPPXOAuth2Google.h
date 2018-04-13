@@ -10,11 +10,9 @@
 #import "XMPPSASLAuthentication.h"
 #import "XMPPStream.h"
 
-NS_ASSUME_NONNULL_BEGIN
 @interface XMPPXOAuth2Google : NSObject <XMPPSASLAuthentication>
 
--(instancetype)initWithStream:(XMPPStream *)stream
-                  accessToken:(NSString *)accessToken;
+-(id)initWithStream:(XMPPStream *)stream accessToken:(NSString *)accessToken;
 
 @end
 
@@ -23,9 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface XMPPStream (XMPPXOAuth2Google)
 
 
-@property (nonatomic, readonly) BOOL supportsXOAuth2GoogleAuthentication;
+- (BOOL)supportsXOAuth2GoogleAuthentication;
 
 - (BOOL)authenticateWithGoogleAccessToken:(NSString *)accessToken error:(NSError **)errPtr;
 
 @end
-NS_ASSUME_NONNULL_END

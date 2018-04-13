@@ -3,7 +3,6 @@
 
 #define _XMPP_PUB_SUB_H
 
-NS_ASSUME_NONNULL_BEGIN
 @interface XMPPPubSub : XMPPModule
 
 /**
@@ -22,31 +21,13 @@ NS_ASSUME_NONNULL_BEGIN
  * However, the exact format of the JID varies from server to server, and is often configurable.
  * If you don't know the PubSub JID beforehand, you may need to use service discovery to find it.
 **/
-- (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithDispatchQueue:(nullable dispatch_queue_t)queue NS_UNAVAILABLE;
-- (instancetype)initWithServiceJID:(nullable XMPPJID *)aServiceJID;
-- (instancetype)initWithServiceJID:(nullable XMPPJID *)aServiceJID dispatchQueue:(nullable dispatch_queue_t)queue NS_DESIGNATED_INITIALIZER;
+- (id)initWithServiceJID:(XMPPJID *)aServiceJID;
+- (id)initWithServiceJID:(XMPPJID *)aServiceJID dispatchQueue:(dispatch_queue_t)queue;
 
 /**
  * The JID of the PubSub server the module is to communicate with.
 **/
-@property (nonatomic, strong, readonly, nullable) XMPPJID *serviceJID;
-
-/**
- * An array of publisher JIDs whose event messages will be received by the module.
- * Only effective for PEP modules (serviceJID == nil). If the value is nil (the default), publisher filter is not applied.
- * This filter is applied together with the node-based one.
- * If both this and pepNodes are nil, only own events will be received.
-**/
-@property (atomic, copy, readwrite, nullable) NSArray<XMPPJID *> *pepPublisherJIDs;
-
-/**
- * An array of nodes whose event messages will be received by the module.
- * Only effective for PEP modules (serviceJID == nil). If the value is nil (the default), node filter is not applied.
- * This filter is applied together with the publisher-based one.
- * If both this and pepPublisherJIDs are nil, only own events will be received.
-**/
-@property (atomic, copy, readwrite, nullable) NSArray<NSString *> *pepNodes;
+@property (nonatomic, strong, readonly) XMPPJID *serviceJID;
 
 /**
  * Sends a subscription request for the given node name.
@@ -93,8 +74,8 @@ NS_ASSUME_NONNULL_BEGIN
  * @see xmppPubSub:didNotSubscribeToNode:withError:
 **/
 - (NSString *)subscribeToNode:(NSString *)node;
-- (NSString *)subscribeToNode:(NSString *)node withJID:(nullable XMPPJID *)myBareOrFullJid;
-- (NSString *)subscribeToNode:(NSString *)node withJID:(nullable XMPPJID *)myBareOrFullJid options:(nullable NSDictionary<NSString*,id> *)options;
+- (NSString *)subscribeToNode:(NSString *)node withJID:(XMPPJID *)myBareOrFullJid;
+- (NSString *)subscribeToNode:(NSString *)node withJID:(XMPPJID *)myBareOrFullJid options:(NSDictionary *)options;
 
 /**
  * Sends an unsubscribe request for the given node name.
@@ -131,8 +112,8 @@ NS_ASSUME_NONNULL_BEGIN
  * @see xmppPubSub:didNotUnsubscribeFromNode:(NSString *)node withError:
 **/
 - (NSString *)unsubscribeFromNode:(NSString *)node;
-- (NSString *)unsubscribeFromNode:(NSString *)node withJID:(nullable XMPPJID *)myBareOrFullJid;
-- (NSString *)unsubscribeFromNode:(NSString *)node withJID:(nullable XMPPJID *)myBareOrFullJid subid:(nullable NSString *)subid;
+- (NSString *)unsubscribeFromNode:(NSString *)node withJID:(XMPPJID *)myBareOrFullJid;
+- (NSString *)unsubscribeFromNode:(NSString *)node withJID:(XMPPJID *)myBareOrFullJid subid:(NSString *)subid;
 
 /**
  * Fetches the current PubSub subscriptions from the server.
@@ -158,7 +139,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @see xmppPubSub:didNotRetrieveSubscriptions:forNode:
 **/
 - (NSString *)retrieveSubscriptions;
-- (NSString *)retrieveSubscriptionsForNode:(nullable NSString *)node;
+- (NSString *)retrieveSubscriptionsForNode:(NSString *)node;
 
 /**
  * @param node
@@ -193,9 +174,9 @@ NS_ASSUME_NONNULL_BEGIN
  * @see xmppPubSub:didNotConfigureSubscriptionToNode:withError:
 **/
 - (NSString *)configureSubscriptionToNode:(NSString *)node
-                                  withJID:(nullable XMPPJID *)myBareOrFullJid
-                                    subid:(nullable NSString *)subid
-                                  options:(nullable NSDictionary<NSString*,id> *)options;
+                                  withJID:(XMPPJID *)myBareOrFullJid
+                                    subid:(NSString *)subid
+                                  options:(NSDictionary *)options;
 
 /**
  * Publishes the entry to the given node.
@@ -253,11 +234,11 @@ NS_ASSUME_NONNULL_BEGIN
  * @see xmppPubSub:didNotPublishToNode:withError:
 **/
 - (NSString *)publishToNode:(NSString *)node entry:(NSXMLElement *)entry;
-- (NSString *)publishToNode:(NSString *)node entry:(NSXMLElement *)entry withItemID:(nullable NSString *)itemId;
+- (NSString *)publishToNode:(NSString *)node entry:(NSXMLElement *)entry withItemID:(NSString *)itemId;
 - (NSString *)publishToNode:(NSString *)node
                       entry:(NSXMLElement *)entry
-                 withItemID:(nullable NSString *)itemId
-                    options:(nullable NSDictionary<NSString*,id> *)options;
+                 withItemID:(NSString *)itemId
+                    options:(NSDictionary *)options;
 
 /**
  * Creates the given node with optional options.
@@ -282,7 +263,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @see xmppPubSub:didNotCreateNode:withError:
 **/
 - (NSString *)createNode:(NSString *)node;
-- (NSString *)createNode:(NSString *)node withOptions:(nullable NSDictionary<NSString*,id> *)options;
+- (NSString *)createNode:(NSString *)node withOptions:(NSDictionary *)options;
 
 /**
  * Deletes the given node.
@@ -324,7 +305,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @see xmppPubSub:didConfigureNode:withIQ:
  * @see xmppPubSub:didNotConfigureNode:withError:
 **/
-- (NSString *)configureNode:(NSString *)node withOptions:(nullable NSDictionary<NSString*,id> *)options;
+- (NSString *)configureNode:(NSString *)node withOptions:(NSDictionary *)options;
 
 /**
  * Retrieves items from given node.
@@ -351,7 +332,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @see xmppPubSub:didNotRetrieveItems:fromNode:
  **/
 - (NSString *)retrieveItemsFromNode:(NSString *)node;
-- (NSString *)retrieveItemsFromNode:(NSString *)node withItemIDs:(nullable NSArray *)itemIds;
+- (NSString *)retrieveItemsFromNode:(NSString *)node withItemIDs:(NSArray *)itemIds;
 
 @end
 
@@ -391,4 +372,3 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)xmppPubSub:(XMPPPubSub *)sender didReceiveMessage:(XMPPMessage *)message;
 
 @end
-NS_ASSUME_NONNULL_END

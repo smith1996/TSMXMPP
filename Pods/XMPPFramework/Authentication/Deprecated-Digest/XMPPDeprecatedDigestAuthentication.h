@@ -2,7 +2,7 @@
 #import "XMPPSASLAuthentication.h"
 #import "XMPPStream.h"
 
-NS_ASSUME_NONNULL_BEGIN
+
 @interface XMPPDeprecatedDigestAuthentication : NSObject <XMPPSASLAuthentication>
 
 // This class implements the XMPPSASLAuthentication protocol.
@@ -17,7 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface XMPPStream (XMPPDeprecatedDigestAuthentication)
 
-@property (nonatomic, readonly) BOOL supportsDeprecatedDigestAuthentication;
+- (BOOL)supportsDeprecatedDigestAuthentication;
 
 @end
-NS_ASSUME_NONNULL_END

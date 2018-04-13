@@ -129,11 +129,6 @@
             [sender sendElement:generatedReceiptResponse];
         }
     }
-    
-    if ([message hasReceiptResponse])
-    {
-        [multicastDelegate xmppMessageDeliveryReceipts:self didReceiveReceiptResponseMessage:message];
-    }
 }
 
 - (XMPPMessage *)xmppStream:(XMPPStream *)sender willSendMessage:(XMPPMessage *)message

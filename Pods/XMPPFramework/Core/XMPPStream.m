@@ -74,7 +74,7 @@ enum XMPPStreamConfig
 #pragma mark -
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-@interface XMPPStream () <XMPPSRVResolverDelegate>
+@interface XMPPStream ()
 {
 	dispatch_queue_t xmppQueue;
 	void *xmppQueueTag;
@@ -1144,7 +1144,7 @@ enum XMPPStreamConfig
 			
 			state = STATE_XMPP_RESOLVING_SRV;
 			
-			srvResolver = [[XMPPSRVResolver alloc] initWithDelegate:self delegateQueue:xmppQueue resolverQueue:NULL];
+			srvResolver = [[XMPPSRVResolver alloc] initWithdDelegate:self delegateQueue:xmppQueue resolverQueue:NULL];
 			
 			srvResults = nil;
 			srvResultsIndex = 0;
@@ -1401,42 +1401,8 @@ enum XMPPStreamConfig
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark Abort/Disconnect
+#pragma mark Disconnect
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-- (void)abortConnecting
-{
-    XMPPLogTrace();
-    
-    dispatch_block_t block = ^{ @autoreleasepool {
-    
-        [self endConnectTimeout];
-        
-        if (state != STATE_XMPP_DISCONNECTED && state != STATE_XMPP_CONNECTED)
-        {
-            [multicastDelegate xmppStreamWasToldToAbortConnect:self];
-            
-            if (state == STATE_XMPP_RESOLVING_SRV)
-            {
-                [srvResolver stop];
-                srvResolver = nil;
-                
-                state = STATE_XMPP_DISCONNECTED;
-            }
-            else
-            {
-                [asyncSocket disconnect];
-                
-                // Everthing will be handled in socketDidDisconnect:withError:
-            }
-        }
-    }};
-    
-    if (dispatch_get_specific(xmppQueueTag))
-        block();
-    else
-        dispatch_sync(xmppQueue, block);
-}
 
 /**
  * Closes the connection to the remote host.
@@ -1778,7 +1744,7 @@ enum XMPPStreamConfig
  * 
  * If the XMPPStream is not connected, or the server doesn't support in-band registration, this method does nothing.
 **/
-- (BOOL)registerWithPassword:(NSString *)password error:(NSError * __autoreleasing *)errPtr
+- (BOOL)registerWithPassword:(NSString *)password error:(NSError **)errPtr
 {
 	XMPPLogTrace();
 	
@@ -3628,7 +3594,7 @@ enum XMPPStreamConfig
 	
 	XMPPHandleAuthResponse result = [auth handleAuth:authResponse];
 	
-	if (result == XMPPHandleAuthResponseSuccess)
+	if (result == XMPP_AUTH_SUCCESS)
 	{
 		// We are successfully authenticated (via sasl:digest-md5)
 		[self setIsAuthenticated:YES];
@@ -3666,7 +3632,7 @@ enum XMPPStreamConfig
 		auth = nil;
 		
 	}
-	else if (result == XMPPHandleAuthResponseFailed)
+	else if (result == XMPP_AUTH_FAIL)
 	{
 		// Revert back to connected state (from authenticating state)
 		state = STATE_XMPP_CONNECTED;
@@ -3678,7 +3644,7 @@ enum XMPPStreamConfig
 		auth = nil;
 		
 	}
-	else if (result == XMPPHandleAuthResponseContinue)
+	else if (result == XMPP_AUTH_CONTINUE)
 	{
 		// Authentication continues.
 		// State doesn't change.
@@ -3749,14 +3715,14 @@ enum XMPPStreamConfig
 	NSError *bindError = nil;
 	XMPPBindResult result = [customBinding start:&bindError];
 	
-	if (result == XMPPBindResultContinue)
+	if (result == XMPP_BIND_CONTINUE)
 	{
 		// Expected result
 		// Wait for reply from server, and forward to customBinding module.
 	}
 	else
 	{
-		if (result == XMPPBindResultSuccess)
+		if (result == XMPP_BIND_SUCCESS)
 		{
 			// It appears binding isn't needed (perhaps handled via auth)
 			
@@ -3767,14 +3733,14 @@ enum XMPPStreamConfig
 			
 			[self continuePostBinding:skipStartSessionOverride];
 		}
-		else if (result == XMPPBindResultFailFallback)
+		else if (result == XMPP_BIND_FAIL_FALLBACK)
 		{
 			// Custom binding isn't available for whatever reason,
 			// but the module has requested we fallback to standard binding.
 			
 			[self startStandardBinding];
 		}
-		else if (result == XMPPBindResultFailAbort)
+		else if (result == XMPP_BIND_FAIL_ABORT)
 		{
 			// Custom binding failed,
 			// and the module requested we abort.
@@ -3794,13 +3760,13 @@ enum XMPPStreamConfig
 	NSError *bindError = nil;
 	XMPPBindResult result = [customBinding handleBind:response withError:&bindError];
 	
-	if (result == XMPPBindResultContinue)
+	if (result == XMPP_BIND_CONTINUE)
 	{
 		// Binding still in progress
 	}
 	else
 	{
-		if (result == XMPPBindResultSuccess)
+		if (result == XMPP_BIND_SUCCESS)
 		{
 			// Binding complete. Continue.
 			
@@ -3811,14 +3777,14 @@ enum XMPPStreamConfig
 			
 			[self continuePostBinding:skipStartSessionOverride];
 		}
-		else if (result == XMPPBindResultFailFallback)
+		else if (result == XMPP_BIND_FAIL_FALLBACK)
 		{
 			// Custom binding failed for whatever reason,
 			// but the module has requested we fallback to standard binding.
 			
 			[self startStandardBinding];
 		}
-		else if (result == XMPPBindResultFailAbort)
+		else if (result == XMPP_BIND_FAIL_ABORT)
 		{
 			// Custom binding failed,
 			// and the module requested we abort.
@@ -4058,10 +4024,7 @@ enum XMPPStreamConfig
 	// Check to see if a session is required
 	// Don't forget about that NSXMLElement bug you reported to apple (xmlns is required or element won't be found)
 	NSXMLElement *f_session = [features elementForName:@"session" xmlns:@"urn:ietf:params:xml:ns:xmpp-session"];
-    if (f_session && [f_session elementForName:@"optional"]) {
-        skipStartSessionOverride = YES;
-    }
-    
+	
 	if (f_session && !skipStartSession && !skipStartSessionOverride)
 	{
 		NSXMLElement *session = [NSXMLElement elementWithName:@"session"];
@@ -4221,10 +4184,7 @@ enum XMPPStreamConfig
 	
 	#if TARGET_OS_IPHONE
 	{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        if (self.enableBackgroundingOnSocket)
-#pragma clang diagnostic pop
+		if (self.enableBackgroundingOnSocket)
 		{
 			__block BOOL result;
 			
@@ -5068,7 +5028,16 @@ enum XMPPStreamConfig
 
 + (NSString *)generateUUID
 {
-	return [NSUUID UUID].UUIDString;
+	NSString *result = nil;
+	
+	CFUUIDRef uuid = CFUUIDCreate(NULL);
+	if (uuid)
+	{
+		result = (__bridge_transfer NSString *)CFUUIDCreateString(NULL, uuid);
+		CFRelease(uuid);
+	}
+	
+	return result;
 }
 
 - (NSString *)generateUUID

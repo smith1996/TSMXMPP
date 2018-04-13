@@ -35,9 +35,6 @@
 }
 
 - (NSString*) uriString {
-    if (!self.jid) {
-        return nil;
-    }
     NSMutableString *uriString = [NSMutableString stringWithFormat:@"xmpp:%@", self.jid.bare];
     if (self.queryAction) {
         [uriString appendFormat:@"?%@", self.queryAction];
