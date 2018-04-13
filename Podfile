@@ -6,7 +6,7 @@ target 'TSMXMPP' do
   use_frameworks!
 
   # Pods for TSMXMPP
-  pod 'XMPPFramework', :git => 'https://github.com/robbiehanson/XMPPFramework.git', :branch => 'master'
+  pod 'XMPPFramework', '~> 3.7.0'
   pod 'AWSS3', '~> 2.6.13'
 
 end
